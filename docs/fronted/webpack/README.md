@@ -23,7 +23,7 @@ npm install webpack webpack-cli --save-dev
 + index.html
 ```
 在 `index.js` 文件中写入 js 代码
-```
+```js
 const h = document.createElement('h1')
 h.innerHTML = 'webpack'
 document.body.appendChild(h)
@@ -38,7 +38,7 @@ npx webpack
     + main.js
 ```
 把打包生成的 `main.js` 在 `index.html` 中引用
-```
+```html
 <script src="./dist/main.js"></script>
 ```
 可以看到，浏览器页面上能够正常显示 `index.js` 执行的结果
@@ -53,7 +53,7 @@ npx webpack
 + webpack.config.js
 ```
 首先修改入口文件和输出目录及文件名
-```
+```js
 const path = require('path')
 module.exports = {
     entry: './path/main.js',
@@ -70,7 +70,7 @@ module.exports = {
     + main.js
 ```
 重新写入 js 代码 
-```
+```js
 import '../src'
 const a = document.createElement('a')
 a.innerHTML = '修改了入口文件和打包输入目录'
@@ -83,7 +83,7 @@ document.body.appendChild(a)
     + bundle.js
 ```
 把 `index.html` 中 引入的 js 文件修改为 `build/bundle.js`
-```
+```html
 <script src="./build/bundle.js"></script>
 ```
 此时再查看浏览器执行结果，已经变成了 `path/main.js` 中的执行结果
@@ -97,7 +97,7 @@ webpack 支持一个项目有多个配置文件，只不过默认执行的是 `w
 + webpack.dev.config.js
 ```
 在 `webpack.dev.confi.js` 写入我们的另一套配置（后面我们的操作介绍基本都以这个文件的配置为例子）
-```
+```js
 const path = require('path')
 module.exports = {
     entry: './path/main.js',
@@ -119,10 +119,10 @@ npx webpack --config webpack.dev.config.js
 把 `dev/bundle.js` 引入到 ```index.html``` 也可以看到 ```path/main.js``` 的正常执行结果
 ## 五、配置 npm 脚本
 如果每次执行自定义的配置文件都要去手动指定版本，这样比较麻烦，我们可以在 `package.json` 文件中，添加一个 `npm script` 脚本，就可以通过 `npm run` 来执行相应的命令了。
-```
+```json
 "scripts": {
     "dev": "webpack --config webpack.dev.config.js",
-  }
+}
 ```
 此时只需要执行 npm 命令，就可以看到效果和原来的一致
 ```
@@ -132,7 +132,7 @@ npm run dev
 ![image.png](https://upload-images.jianshu.io/upload_images/19423820-7ff564a085284db8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 这是因为webpack需要我们提供一个`mode` 配置选项来告知 webpack 使用相应模式的内置优化。mode选项有两个值`development` 和`production` ，顾名思义就是开发模式和生产模式，它会将 `process.env.NODE_ENV` 设为相应的值
 现在，我们在 `webpack.dev.config.js` 中加上 `mode`  配置
-```
+```js
 const path = require('path')
 module.exports = {
     mode: 'development'
@@ -150,7 +150,7 @@ module.exports = {
     + index.css
 ```
 在 `index.css` 中写入样式
-```
+```css
 h1 {
     color: red;
 }
@@ -163,7 +163,7 @@ npm install style-loader css-loader -D
 ```
 ☆ 因为 loader 只是在开发时需要用到，在打包后生成生产项目的时候已经不需要用到了，所以只要 `-D` 就好，而不需要 `-S`
 安装完成后，需要在 webpack 的配置文件中进行配置，这里我们就使用 `webpack.dev.config.js` 来配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -194,7 +194,7 @@ npm install less less-loader -D
 npm install sass-loader node-sass -D
 ```
 然后，分别在 `webpack.dev.config.js` 中进行配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -227,7 +227,7 @@ module.exports = {
     + index.sass
 ```
 然后分别写入样式打包验证一下
-```
+```less
 // index.less
 h1 {
     font-size: 50px;
@@ -243,7 +243,7 @@ a
     font-size: 20px
 ```
 然后在 `path/main.js` 中引入，并执行 `npm run dev` 打包
-```
+```js
 // path/main.js
 import '../style/index.less'
 import '../style/index.scss'
@@ -258,7 +258,7 @@ import '../style/index.sass'
 npm install file-loader -D
 ```
 在 `webpack.dev.config.js` 配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -279,7 +279,7 @@ module.exports = {
     + iconfont.css
 ```
 然后在 `path/main.js` 中引入使用，并执行 `npm run dev` 打包验证
-```
+```js
 // path/main.js
 import '../style/iconfont.css'
 const i = document.createElement('i')
@@ -295,7 +295,7 @@ document.body.appendChild(i)
         + logo.svg
 ```
 在  `src/index.js` 和 `style/index.less` 中分别写入代码
-```
+```js
 // src/index.js
 import icon from './img/logo.svg'
 const img = new Image()
@@ -321,7 +321,7 @@ img {
 npm install html-webpack-plugin -D
 ```
 接着回到 `webpack.dev.config.js` 中配置
-```
+```js
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     plugins: [
@@ -344,7 +344,7 @@ module.exports = {
 npm install url-loader -D
 ```
 然后回到 `webpack.dev.config.js` 中配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -380,14 +380,14 @@ watch 相当于是在代码发生改变后自动帮我们执行打包命令，�
 npx webpack --watch --config webpack.dev.config.js
 ```
 我们同样可以在 `package.json` 中把它配置成 `npm script` 脚本
-```
+```json
 "scripts": {
     "watch": "webpack --watch --config webpack.dev.config.js",
-  }
+}
 ```
 这样我们就可以直接通过执行 `npm run watch` 来进入观察模式。
 另一种是直接在 `webpack.dev.config.js` 中配置
-```
+```js
 module.exports = {
     watch: true
 }
@@ -404,10 +404,10 @@ npm install webpack-dev-server -D
 npx webpack-dev-server
 ```
 把它配置成 `npm script` 脚本
-```
+```json
 "scripts": {
     "server": "webpack-dev-server --config webpack.dev.config.js"
-  }
+}
 ```
 执行 `npm run server`，可以看到 `webpack-dev-server` 为我们开了一个端口为`8080` 的服务
 ![image.png](https://upload-images.jianshu.io/upload_images/19423820-4ccd693f36ed7b6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -415,7 +415,7 @@ npx webpack-dev-server
 ![image.png](https://upload-images.jianshu.io/upload_images/19423820-bbb59168049bc499.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 它与`watch` 模式不同的是，你可以先暂且简单地理解为它帮我们开启了一个服务器，并且把自动打包后的文件映射到服务器的内存根目录上，而不是输出到本地项目的根目录。这里其实也是借助了我们前面使用到的 `html-webpack-plugin` 插件。
 `webpack-dev-server` 还为我们提供了其他的配置项，下面我们通过在 `webpack.dev.config.js` 里面配置看一下究竟
-```
+```js
 module.exports = {
     devServer: {
         // 自动打开浏览器
@@ -432,7 +432,7 @@ module.exports = {
 }
 ```
 配置成 `npm script` 脚本
-```
+```json
 "scripts": {
     "server": "webpack-dev-server --hot --compress --port 3000 --open --contentBase src --config webpack.dev.config.js"
 }
@@ -447,7 +447,7 @@ webpack-dev-server 实际上就相当于启用了一个 express 的 http 服务�
 npm install --save-dev express webpack-dev-middleware
 ```
 在 `webpack.dev.config.js` 中添加一个 `publicPath`
-```
+```js
 module.exports = {
     output: {
         publicPath: '/'
@@ -455,7 +455,7 @@ module.exports = {
 }
 ```
 在根目录下新建一个 `server.js `
-```
+```js
 const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -482,7 +482,7 @@ node server.js
 尽管现在新版本的浏览器已经能够识别大部分的 `es6` 语法，但是大部分时候我们还是要考虑一些低版本浏览器的兼容性，况且 js 的语法也一直在更新。所以为了让我们能够在项目中使用更多更高级的 js 语法，我们就需要有一个转换器来把高版本语法转为低版本语法，`babel` 就是这样的一个转换器。
 我们可以来测试一下
 首先在 `path/main.js` 中写入一段 es6 代码
-```
+```js
 const fn = () => console.log('这是es6的箭头函数')
 
 fn()
@@ -498,7 +498,7 @@ console.log(name)
 ```
 这时，运行 `npm run dev` 打包后发现谷歌浏览器是可以正常执行的，没有任何问题，我们打开 `dev/bundle.js` ，可以看到，这两段 es6 代码还是原来的样子，webpack 并没有帮我们做任何转换
 ![image.png](https://upload-images.jianshu.io/upload_images/19423820-5c1fabf15b3a9729.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)但是如果是更高级的语法呢？我们再来看看下面这段代码
-```
+```js
 class Dog {
     name = 'Tom'
     static color = 'yellow'
@@ -517,7 +517,7 @@ npm install babel-loader @babel/core @babel/preset-env -D
 npm install @babel/plugin-proposal-class-properties -D
 ```
 然后在 `webpack.dev.config.js` 中添加配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -542,7 +542,7 @@ module.exports = {
 此时，再执行 `npm run dev` 可以看到浏览器的运行结果是一样的，但是我们再次打开 `dev/bundle.js` 可以看到我们刚刚添加的 es6 语法已经被转换成低版本的 js 语法
 ![image.png](https://upload-images.jianshu.io/upload_images/19423820-79339c8d4532b42e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 下面我们再来看一下这段代码，`generator` 语法
-```
+```js
 function *func() { 
     yield 1
     yield 2
@@ -564,7 +564,7 @@ npm install @babel/plugin-transform-runtime -D
 npm install @babel/runtime -S
 ```
 并且在 `webpack.dev.config.js` 中添加配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -591,7 +591,7 @@ module.exports = {
 这样就能在使用 babel 的同时使用 generator 语法，并且代码也做了相应的语法转换
 ![image.png](https://upload-images.jianshu.io/upload_images/19423820-44837cbf881198bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 那对于高版本的原型方法，babel 默认会不会转换呢？我们再来看一段
-```
+```js
 let arr = []
 console.log(arr.includes('a'))
 
@@ -605,11 +605,11 @@ console.log(str.includes('1'))
 npm install @babel/polyfill -S
 ```
 安装后，在需要用到高版本原型方法的地方引入即可
-```
+```js
 import '@babel/polyfill'
 ```
 或者在 `webpack.dev.config.js` 中的入口做配置
-```
+```js
 module.exports = {
     entry: ['@babel/polyfill', './path/main.js']
 }
@@ -617,7 +617,7 @@ module.exports = {
 再次打包，可以看到代码已经被做了转换处理，这里转换后的代码比较长，我就不贴了。简的来说，就是引入了 es6 的语法包，然后再自定义了这个方法。
 ## 十二、source map的使用
 在开发的过程中，我们经常需要通过在控制台查看报错信息或打印输出日志来追踪错误和警告在源代码中的原始位置，但是因为我们使用 babel 等转换器把源代码进行了转换，导致控制台输出的行数位置和我们实际的代码不一致，造成了代码调试的困难。`source map` 的作用就是为了解决这个问题，并且使用非常简单，只需要在 `webpack.dev.config.js` 中添加一句配置就可以将编译后的代码映射回原始源代码
-```
+```js
 module.exports = {
     devtool: 'cheap-module-eval-source-map'
 }
@@ -642,7 +642,7 @@ webpack 有很多的插件，主要是用来解决一些 loader 无法完美实�
 npm install clean-webpack-plugin -D
 ```
 然后在 `webpack.dev.config.js` 的 `plugins` 选项中配置即可
-```
+```js
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
     plugins: [
@@ -652,7 +652,7 @@ module.exports = {
 ```
 ### BannerPlugin
 这个插件主要用于为每个 `chunk` 文件头部添加版权注释信息，这是 webpack 的内置插件，所以不需要装包就可以直接在 `webpack.dev.config.js` 中使用
-```
+```js
 module.exports = {
     plugins: [
         new webpack.BannerPlugin({
@@ -669,7 +669,7 @@ module.exports = {
 npm install copy-webpack-plugin -D
 ```
 然后再 `webpack.dev.config.js` 的 `plugins` 选项中做配置
-```
+```js
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
@@ -692,7 +692,7 @@ module.exports = {
 npm install html-withimg-loader -D
 ```
 然后在 `webpack.dev.config.js` 中配置即可
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -727,7 +727,7 @@ src
   + other.js
 ```
 然后修改 `webpack.dev.config.js` 的入口、出口和 `HTMLWebpackPlugin` 插件配置
-```
+```js
 module.exports = {
     entry: {
         index: './src/index.js',
@@ -765,7 +765,7 @@ module.exports = {
 npm install expose-loader -D
 ```
 在 `webpack.dev.config.js` 中配置
-```
+```js
 module.exports = {
     module: {
         rules: [
@@ -783,7 +783,7 @@ module.exports = {
 ☆ `require.resolve` 用来获取模块的绝对路径，所以这里的 loader 只会作用于 jquery 模块，并且只在 bundle 中使用到它时，才进行处理
 ### webpack.ProvidePlugin 将库自动加载到每个模块
 在 `webpack.dev.config.js` 中创建插件对象，把变量指向对应的 node 模块
-```
+```js
 module.exports = {
     plugins: [
         new webpack.ProvidePlugin({
@@ -796,7 +796,7 @@ module.exports = {
 ## 十七、区分环境配置文件打包
 前面我们也说到过，webpack 支持一个项目有多个配置文件。项目开发时一般需要使用两套配置文件，用于开发阶段打包（不压缩代码，不优化代码，增加效率）和上线阶段打包（压缩代码、优化代码，打包后直接上线使用），一般情况下，我们会抽取成三个配置文件：`webpack.base.js`、`webpack.prod.js`、`webpack.dev.js`。
 首先，将开发环境和生产环境公用的配置放入 base 中，不同的配置各自放入 prod 或 dev 文件中（例如：mode）；然后，在 dev 和 prod 中使用 `webpack-merge` 把自己的配置与 base 的配置进行合并后导出；最后，在 `package.json` 中配置 `npm script` 脚本，通过 `--config` 手动指定特定的配置文件。
-```
+```js
 // ----------------------------------webpack.base.js----------------------------------
 // 一般包括入口、出口、插件以及loader的配置
  const path = require('path')
@@ -910,7 +910,7 @@ module.exports = merge(require('./webpack.base'), {
 })
 ```
 配置两个 `npm script` 脚本
-```
+```json
 "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
@@ -925,7 +925,7 @@ module.exports = merge(require('./webpack.base'), {
 ```
 配置文件和 `npm script` 脚本也要做相应的修改，否则执行的时候会有文件路径问题
 ☆ 在 webpack 的配置文件中，相对路径是一直以根目录为基准的，但是绝对路径的 `__dirname` 指的是当前配置文件所在目录
-```
+```js
 // ----------------------------------webpack.base.js----------------------------------
  const path = require('path')
  module.exports = {
@@ -946,7 +946,7 @@ module.exports = merge(require('./webpack.base'), {
 ## 十八、定义环境变量
 某些情况下我们需要在业务代码中区分当前项目是处于开发阶段还是上线阶段，比如当后端在开发环境和生产环境提供两个不同的 API 地址时。
 webpack 提供了一个内置插件 `DefinePlugin` 来让我们定义一个环境变量，最终可以实现开发阶段与上线阶段的 api 地址自动切换。
-```
+```js
 // ----------------------------------webpack.dev.js----------------------------------
  const webpack = require('webpack')
  module.exports = {
@@ -975,7 +975,7 @@ cors 即跨域资源共享，应该是目前最主流的跨域解决方案了，
 http-proxy 其实就是 http 请求代理，原理很简单，就是客户端浏览器直接访问本域服务器，proxy 再将 ajax 请求转发给数据接口服务器。
 这里要介绍的 devServer 解决跨域，其原理就是 http-proxy。也就是将所有 ajax 请求发送给 devServer 服务器，再由 devServer 服务器做一次转发，发送给数据接口服务器。由于 ajax 是发送给 devServer 服务器的，所以不存在跨域，而 devServer 是用 node 平台发送的 http 请求，自然也不涉及到跨域问题。
 使用 `devServer` 来配置 http 转发只需要在开发环境的配置文件中添加 `proxy`
-```
+```js
 // ----------------------------------webpack.dev.js ----------------------------------
  const merge = require('webpack-merge')
  module.exports = merge(require('./webpack.base.js'), {
@@ -999,11 +999,11 @@ http-proxy 其实就是 http 请求代理，原理很简单，就是客户端浏
  })
 ```
 在业务代码中使用请求，注意接口地址不需要再拼接域名
-```
+```js
 axios.get('/api/getInfo').then(res => console.log(res))
 ```
 如果后端 api 地址不是固定以 /api 开头的呢？我们也同样可以自定义一个 /api，然后再把地址进行重写
-```
+```js
 // ----------------------------------webpack.dev.js ----------------------------------
  const merge = require('webpack-merge')
  module.exports = merge(require('./webpack.base.js'), {
@@ -1025,7 +1025,7 @@ axios.get('/api/getInfo').then(res => console.log(res))
 ## 二十、HMR 的简单使用
 HMR 即模块热替换，就是通过 `module.hot.accept` 方法进行文件监视，从而对某个模块进行热更新。只要模块内容发生变化，就会触发回调函数，从而可以重新读取模块内容，做对应的操作
 我们可以新建一个 `hotmodule.js` 作为监视的文件，然后在 `index.js` 中写入下面的代码对 `hotmodule.js` 进行监听，当 `hotmodule.js` 被修改了，可以看到浏览器不会刷新，但是控制台会打印输出最新的信息
-```
+```js
 if (module.hot) {
     module.hot.accept('./hotmodule.js', () => {
         console.log('hotmodule.js更新了')
