@@ -1,7 +1,7 @@
 module.exports = {
     category: {
         location: 1,
-        text: '前端'
+        text: '分类'
     },
     tag: {
         location: 5,
