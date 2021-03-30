@@ -4,7 +4,7 @@ module.exports = {
         text: '分类'
     },
     tag: {
-        location: 5,
+        location: 3,
         text: '标签'
     },
     socialLinks: [
