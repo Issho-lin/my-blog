@@ -5,7 +5,9 @@
   "repository": "https://github.com/Issho-lin/Issho-blog.git",
   "author": "linqibin",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "vuepress-plugin-image": "^1.0.4"
+  },
   "scripts": {
     "dev": "vuepress dev docs",
     "build": "vuepress build docs",

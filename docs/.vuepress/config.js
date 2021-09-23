@@ -11,5 +11,8 @@ module.exports = {
     themeConfig,
     markdown: {
         extractHeaders: ['h2']
-    }
+    },
+    plugins: [
+        ['image']
+    ]
 }
