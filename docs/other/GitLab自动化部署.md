@@ -6,7 +6,7 @@ author: Issho Lin
 tags:
  - 自动化部署
 categories:
- - 其他
+ - 前端工程化
 ---
 ### 官方步骤
 [前往查看](https://about.gitlab.com/install/#centos-7)
